@@ -3,10 +3,8 @@ package org.yearup.data;
 import org.yearup.models.Vehicle;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.math.BigDecimal;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,9 +52,42 @@ public class MysqlVehicleDao
         return vehicles;
     }
 
-    public List<Vehicle> getByPriceRange(double min, double max)
+    public List<Vehicle> getByPriceRange(BigDecimal min, BigDecimal max)
     {
         List<Vehicle> vehicles = new ArrayList<>();
+
+        String sql = """
+                SELECT * FROM vehicles
+                WHERE price BETWEEN ? AND ?
+                ORDER BY price;
+                """;
+
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            statement.setBigDecimal(1, min);
+            statement.setBigDecimal(2, max);
+
+            ResultSet row = statement.executeQuery();
+
+            while(row.next())
+            {
+                Vehicle vehicle = new Vehicle()
+                {{
+                    setVin(row.getString("vin"));
+                    setMake(row.getString("make"));
+                    setModel(row.getString("model"));
+                    setColor(row.getString("color"));
+                    setYear(row.getInt("year"));
+                    setMiles(row.getInt("miles"));
+                    setPrice(row.getBigDecimal("price"));
+                    setSold(row.getBoolean("sold"));
+                }};
+
+                vehicles.add(vehicle);
+            }
+        }
+        catch(SQLException ignored){}
 
         return vehicles;
     }

@@ -3,6 +3,7 @@ package org.yearup.application;
 import org.yearup.data.MysqlVehicleDao;
 import org.yearup.models.Vehicle;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,6 +24,7 @@ public class CarDealershipApplication
             System.out.println("\nWhat do you want to do?\n");
 
             System.out.println("1) Display all vehicles");
+            System.out.println("2) Display by price range");
 
             System.out.println("\n0) Exit\n");
 
@@ -39,6 +41,10 @@ public class CarDealershipApplication
                 case 1 ->
                 {
                     displayAllVehicles();
+                }
+                case 2 ->
+                {
+                    displayByPriceRange();
                 }
             }
         }
@@ -58,6 +64,24 @@ public class CarDealershipApplication
     public void displayAllVehicles()
     {
         List<Vehicle> vehicles = vehicleDao.getAll();
+        printVehicleHeader();
+        for(var v : vehicles)
+        {
+            printVehicle(v);
+        }
+    }
+
+    public void displayByPriceRange()
+    {
+        System.out.print("\nEnter minimum price: ");
+        BigDecimal min = scanner.nextBigDecimal();
+        scanner.nextLine();
+
+        System.out.print("Enter maximum price: ");
+        BigDecimal max = scanner.nextBigDecimal();
+        scanner.nextLine();
+
+        List<Vehicle> vehicles = vehicleDao.getByPriceRange(min, max);
         printVehicleHeader();
         for(var v : vehicles)
         {
