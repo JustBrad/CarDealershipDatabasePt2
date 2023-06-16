@@ -27,6 +27,7 @@ public class CarDealershipApplication
             System.out.println("2) Display by price range");
             System.out.println("3) Display by make/model");
             System.out.println("4) Display by year range");
+            System.out.println("5) Display by color");
 
             System.out.println("\n0) Exit\n");
 
@@ -55,6 +56,10 @@ public class CarDealershipApplication
                 case 4 ->
                 {
                     displayByYearRange();
+                }
+                case 5 ->
+                {
+                    displayByColor();
                 }
             }
         }
@@ -129,7 +134,19 @@ public class CarDealershipApplication
         {
             printVehicle(v);
         }
+    }
 
+    public void displayByColor()
+    {
+        System.out.print("\nEnter color: ");
+        String color = scanner.nextLine().strip();
+
+        List<Vehicle> vehicles = vehicleDao.getByColor(color);
+        printVehicleHeader();
+        for(var v : vehicles)
+        {
+            printVehicle(v);
+        }
     }
 
 
