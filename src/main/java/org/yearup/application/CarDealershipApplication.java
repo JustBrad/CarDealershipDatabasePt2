@@ -28,6 +28,7 @@ public class CarDealershipApplication
             System.out.println("3) Display by make/model");
             System.out.println("4) Display by year range");
             System.out.println("5) Display by color");
+            System.out.println("6) Display by mileage");
 
             System.out.println("\n0) Exit\n");
 
@@ -60,6 +61,10 @@ public class CarDealershipApplication
                 case 5 ->
                 {
                     displayByColor();
+                }
+                case 6 ->
+                {
+                    displayByMileage();
                 }
             }
         }
@@ -142,6 +147,22 @@ public class CarDealershipApplication
         String color = scanner.nextLine().strip();
 
         List<Vehicle> vehicles = vehicleDao.getByColor(color);
+        printVehicleHeader();
+        for(var v : vehicles)
+        {
+            printVehicle(v);
+        }
+    }
+
+    public void displayByMileage()
+    {
+        System.out.print("\nEnter minimum mileage: ");
+        int min = Integer.parseInt(scanner.nextLine().strip());
+
+        System.out.print("Enter maximum mileage: ");
+        int max = Integer.parseInt(scanner.nextLine().strip());
+
+        List<Vehicle> vehicles = vehicleDao.getByMileRange(min, max);
         printVehicleHeader();
         for(var v : vehicles)
         {
