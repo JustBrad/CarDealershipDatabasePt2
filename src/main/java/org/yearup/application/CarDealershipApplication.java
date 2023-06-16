@@ -26,6 +26,7 @@ public class CarDealershipApplication
             System.out.println("1) Display all vehicles");
             System.out.println("2) Display by price range");
             System.out.println("3) Display by make/model");
+            System.out.println("4) Display by year range");
 
             System.out.println("\n0) Exit\n");
 
@@ -50,6 +51,10 @@ public class CarDealershipApplication
                 case 3 ->
                 {
                     displayByMakeModel();
+                }
+                case 4 ->
+                {
+                    displayByYearRange();
                 }
             }
         }
@@ -108,6 +113,23 @@ public class CarDealershipApplication
         {
             printVehicle(v);
         }
+    }
+
+    public void displayByYearRange()
+    {
+        System.out.print("\nEnter minimum year: ");
+        int min = Integer.parseInt(scanner.nextLine().strip());
+
+        System.out.print("Enter maximum year: ");
+        int max = Integer.parseInt(scanner.nextLine().strip());
+
+        List<Vehicle> vehicles = vehicleDao.getByYearRange(min, max);
+        printVehicleHeader();
+        for(var v : vehicles)
+        {
+            printVehicle(v);
+        }
+
     }
 
 
