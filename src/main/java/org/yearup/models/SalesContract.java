@@ -67,6 +67,7 @@ public class SalesContract
 
     public BigDecimal getRecordingFee()
     {
+        recordingFee = BigDecimal.valueOf(100);
         return recordingFee;
     }
 
@@ -77,6 +78,7 @@ public class SalesContract
 
     public BigDecimal getProcessingFee()
     {
+        processingFee = BigDecimal.valueOf(495);
         return processingFee;
     }
 
@@ -87,6 +89,7 @@ public class SalesContract
 
     public BigDecimal getSalesTax()
     {
+        salesTax = salesPrice.multiply(BigDecimal.valueOf(0.125));
         return salesTax;
     }
 
