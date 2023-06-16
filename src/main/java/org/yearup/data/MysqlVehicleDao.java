@@ -249,15 +249,29 @@ public class MysqlVehicleDao
         return vehicles;
     }
 
-    public List<Vehicle> getByType(String type)
-    {
-        List<Vehicle> vehicles = new ArrayList<>();
-
-        return vehicles;
-    }
-
     public Vehicle add(Vehicle vehicle)
     {
+        String sql = """
+                INSERT INTO vehicles (vin, make, model, color, year, miles, price, sold)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+                """;
+
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            statement.setString(1, vehicle.getVin());
+            statement.setString(2, vehicle.getMake());
+            statement.setString(3, vehicle.getModel());
+            statement.setString(4, vehicle.getColor());
+            statement.setInt(5, vehicle.getYear());
+            statement.setInt(6, vehicle.getMiles());
+            statement.setBigDecimal(7, vehicle.getPrice());
+            statement.setBoolean(8, vehicle.isSold());
+
+            statement.execute();
+        }
+        catch(SQLException ignored){}
+
         return null;
     }
 

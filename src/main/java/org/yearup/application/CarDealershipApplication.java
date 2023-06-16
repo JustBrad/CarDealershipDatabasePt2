@@ -29,6 +29,7 @@ public class CarDealershipApplication
             System.out.println("4) Display by year range");
             System.out.println("5) Display by color");
             System.out.println("6) Display by mileage");
+            System.out.println("7) Add a vehicle");
 
             System.out.println("\n0) Exit\n");
 
@@ -65,6 +66,10 @@ public class CarDealershipApplication
                 case 6 ->
                 {
                     displayByMileage();
+                }
+                case 7 ->
+                {
+                    addVehicle();
                 }
             }
         }
@@ -168,6 +173,44 @@ public class CarDealershipApplication
         {
             printVehicle(v);
         }
+    }
+
+    public void addVehicle()
+    {
+        System.out.print("\nEnter VIN: ");
+        String vin = scanner.nextLine().strip().toUpperCase();
+        System.out.print("Enter Make: ");
+        String make = scanner.nextLine().strip();
+        System.out.print("Enter Model: ");
+        String model = scanner.nextLine().strip();
+        System.out.print("Enter Color: ");
+        String color = scanner.nextLine().strip();
+        System.out.print("Enter Year: ");
+        int year = Integer.parseInt(scanner.nextLine().strip());
+        System.out.print("Enter Mileage: ");
+        int miles = Integer.parseInt(scanner.nextLine().strip());
+        System.out.print("Enter Price: ");
+        BigDecimal price = scanner.nextBigDecimal();
+        scanner.nextLine();
+
+        // Vehicle won't be sold instantly
+        boolean sold = false;
+
+        Vehicle vehicle = new Vehicle()
+        {{
+            setVin(vin);
+            setMake(make);
+            setModel(model);
+            setColor(color);
+            setYear(year);
+            setMiles(miles);
+            setPrice(price);
+            setSold(sold);
+        }};
+
+        vehicleDao.add(vehicle);
+        System.out.printf("\n%d %s %s was added to the database!\n", vehicle.getYear(), vehicle.getMake(), vehicle.getModel());
+
     }
 
 
