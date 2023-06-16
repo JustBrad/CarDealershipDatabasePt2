@@ -30,6 +30,7 @@ public class CarDealershipApplication
             System.out.println("5) Display by color");
             System.out.println("6) Display by mileage");
             System.out.println("7) Add a vehicle");
+            System.out.println("8) Delete a vehicle");
 
             System.out.println("\n0) Exit\n");
 
@@ -70,6 +71,10 @@ public class CarDealershipApplication
                 case 7 ->
                 {
                     addVehicle();
+                }
+                case 8 ->
+                {
+                    deleteVehicle();
                 }
             }
         }
@@ -211,6 +216,26 @@ public class CarDealershipApplication
         vehicleDao.add(vehicle);
         System.out.printf("\n%d %s %s was added to the database!\n", vehicle.getYear(), vehicle.getMake(), vehicle.getModel());
 
+    }
+
+    public void deleteVehicle()
+    {
+        displayAllVehicles();
+        System.out.print("\nEnter VIN to delete: ");
+        String vin = scanner.nextLine().strip().toUpperCase();
+
+        System.out.println();
+        Vehicle vehicle = vehicleDao.getVehicleByVin(vin);
+        printVehicleHeader();
+        printVehicle(vehicle);
+        System.out.print("\nAre you sure? (y/n) ");
+        String yesNo = scanner.nextLine().strip();
+        if(yesNo.equalsIgnoreCase("Y"))
+        {
+            vehicleDao.delete(vin);
+
+            System.out.printf("\n%d %s %s was removed from the database!\n", vehicle.getYear(), vehicle.getMake(), vehicle.getModel());
+        }
     }
 
 

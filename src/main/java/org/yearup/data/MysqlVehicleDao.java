@@ -17,6 +17,43 @@ public class MysqlVehicleDao
         this.dataSource = dataSource;
     }
 
+    public Vehicle getVehicleByVin(String vin)
+    {
+        String sql = """
+                SELECT *
+                FROM vehicles
+                WHERE vin = ?;
+                """;
+
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            statement.setString(1, vin);
+
+            ResultSet row = statement.executeQuery();
+
+            if(row.next())
+            {
+                Vehicle vehicle = new Vehicle()
+                {{
+                    setVin(row.getString("vin"));
+                    setMake(row.getString("make"));
+                    setModel(row.getString("model"));
+                    setColor(row.getString("color"));
+                    setYear(row.getInt("year"));
+                    setMiles(row.getInt("miles"));
+                    setPrice(row.getBigDecimal("price"));
+                    setSold(row.getBoolean("sold"));
+                }};
+
+                return vehicle;
+            }
+        }
+        catch(SQLException ignored){}
+
+        return null;
+    }
+
     public List<Vehicle> getAll()
     {
         List<Vehicle> vehicles = new ArrayList<>();
@@ -249,7 +286,7 @@ public class MysqlVehicleDao
         return vehicles;
     }
 
-    public Vehicle add(Vehicle vehicle)
+    public void add(Vehicle vehicle)
     {
         String sql = """
                 INSERT INTO vehicles (vin, make, model, color, year, miles, price, sold)
@@ -271,12 +308,22 @@ public class MysqlVehicleDao
             statement.execute();
         }
         catch(SQLException ignored){}
-
-        return null;
     }
 
-    void delete(int id)
+    public void delete(String vin)
     {
+        String sql = """
+                DELETE FROM vehicles
+                WHERE vin = ?;
+                """;
 
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            statement.setString(1, vin);
+
+            statement.executeUpdate();
+        }
+        catch(SQLException ignored){}
     }
 }
