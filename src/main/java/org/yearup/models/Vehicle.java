@@ -13,6 +13,8 @@ public class Vehicle
     private BigDecimal price;
     private boolean isSold;
 
+    public Vehicle(){}
+
     public String getVin()
     {
         return vin;

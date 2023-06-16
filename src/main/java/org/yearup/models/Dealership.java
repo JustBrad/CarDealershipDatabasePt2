@@ -7,6 +7,8 @@ public class Dealership
     private String address;
     private String phone;
 
+    public Dealership(){}
+
     public int getDealershipId()
     {
         return dealershipId;

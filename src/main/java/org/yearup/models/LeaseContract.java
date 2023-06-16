@@ -14,6 +14,8 @@ public class LeaseContract
     private BigDecimal salesTax;
     private BigDecimal monthlyPayment;
 
+    public LeaseContract(){}
+
     public int getLeaseId()
     {
         return leaseId;

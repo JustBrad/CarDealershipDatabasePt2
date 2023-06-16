@@ -13,6 +13,8 @@ public class SalesContract
     private BigDecimal processingFee;
     private BigDecimal salesTax;
 
+    public SalesContract(){}
+
     public int getSalesId()
     {
         return salesId;
