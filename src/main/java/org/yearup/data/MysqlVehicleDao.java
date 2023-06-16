@@ -96,6 +96,38 @@ public class MysqlVehicleDao
     {
         List<Vehicle> vehicles = new ArrayList<>();
 
+        String sql = """
+                SELECT * FROM vehicles
+                WHERE make = ? AND model = ?;
+                """;
+
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            statement.setString(1, make);
+            statement.setString(2, model);
+
+            ResultSet row = statement.executeQuery();
+
+            while(row.next())
+            {
+                Vehicle vehicle = new Vehicle()
+                {{
+                    setVin(row.getString("vin"));
+                    setMake(row.getString("make"));
+                    setModel(row.getString("model"));
+                    setColor(row.getString("color"));
+                    setYear(row.getInt("year"));
+                    setMiles(row.getInt("miles"));
+                    setPrice(row.getBigDecimal("price"));
+                    setSold(row.getBoolean("sold"));
+                }};
+
+                vehicles.add(vehicle);
+            }
+        }
+        catch(SQLException ignored){}
+
         return vehicles;
     }
 

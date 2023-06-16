@@ -25,6 +25,7 @@ public class CarDealershipApplication
 
             System.out.println("1) Display all vehicles");
             System.out.println("2) Display by price range");
+            System.out.println("3) Display by make/model");
 
             System.out.println("\n0) Exit\n");
 
@@ -45,6 +46,10 @@ public class CarDealershipApplication
                 case 2 ->
                 {
                     displayByPriceRange();
+                }
+                case 3 ->
+                {
+                    displayByMakeModel();
                 }
             }
         }
@@ -82,6 +87,22 @@ public class CarDealershipApplication
         scanner.nextLine();
 
         List<Vehicle> vehicles = vehicleDao.getByPriceRange(min, max);
+        printVehicleHeader();
+        for(var v : vehicles)
+        {
+            printVehicle(v);
+        }
+    }
+
+    public void displayByMakeModel()
+    {
+        System.out.print("\nEnter make: ");
+        String make = scanner.nextLine().strip();
+
+        System.out.print("Enter model: ");
+        String model = scanner.nextLine().strip();
+
+        List<Vehicle> vehicles = vehicleDao.getByMakeModel(make, model);
         printVehicleHeader();
         for(var v : vehicles)
         {
