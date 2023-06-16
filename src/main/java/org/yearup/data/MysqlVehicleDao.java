@@ -2,14 +2,54 @@ package org.yearup.data;
 
 import org.yearup.models.Vehicle;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MysqlVehicleDao
 {
+    private DataSource dataSource;
+
+    public MysqlVehicleDao(DataSource dataSource)
+    {
+        this.dataSource = dataSource;
+    }
+
     public List<Vehicle> getAll()
     {
         List<Vehicle> vehicles = new ArrayList<>();
+
+        String sql = """
+                SELECT * FROM vehicles;
+                """;
+
+        try(Connection connection = dataSource.getConnection();
+            Statement statement = connection.createStatement();)
+        {
+            ResultSet row = statement.executeQuery(sql);
+
+            while(row.next())
+            {
+                Vehicle vehicle = new Vehicle()
+                {{
+                    setVin(row.getString("vin"));
+                    setMake(row.getString("make"));
+                    setModel(row.getString("model"));
+                    setColor(row.getString("color"));
+                    setYear(row.getInt("year"));
+                    setMiles(row.getInt("miles"));
+                    setPrice(row.getBigDecimal("price"));
+                    setSold(row.getBoolean("sold"));
+                }};
+
+                vehicles.add(vehicle);
+            }
+        }
+        catch(SQLException ignored){}
 
         return vehicles;
     }
@@ -42,7 +82,7 @@ public class MysqlVehicleDao
         return vehicles;
     }
 
-    public List<Vehicle> getByMileRange(double min, double max)
+    public List<Vehicle> getByMileRange(int min, int max)
     {
         List<Vehicle> vehicles = new ArrayList<>();
 

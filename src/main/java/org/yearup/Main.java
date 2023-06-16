@@ -1,12 +1,27 @@
 package org.yearup;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.yearup.application.CarDealershipApplication;
+import org.yearup.data.MysqlVehicleDao;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        CarDealershipApplication app = new CarDealershipApplication();
+        String baseUrl = "jdbc:mysql://localhost:3306/car_dealership";
+        String username = "root";
+        String password = "P@ssw0rd";
+
+        BasicDataSource dataSource = new BasicDataSource()
+        {{
+            setUrl(baseUrl);
+            setUsername(username);
+            setPassword(password);
+        }};
+
+        MysqlVehicleDao vehicleDao = new MysqlVehicleDao(dataSource);
+
+        CarDealershipApplication app = new CarDealershipApplication(vehicleDao);
         app.run();
     }
 }
