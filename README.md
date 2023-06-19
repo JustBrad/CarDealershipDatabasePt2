@@ -1,7 +1,7 @@
 # CarDealershipDatabasePt2
 
 This simple Java application allows you to interact with and edit
-a MySQL Database.
+a MySQL Database based on a car dealership. 
 
 ### Home Screen
 
